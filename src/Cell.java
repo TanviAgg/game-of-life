@@ -1,15 +1,20 @@
+// Represents the state of one square in the grid
 class Cell {
-    private boolean alive;
+    private State state;
+
+    Cell() {
+        this.state = State.DEAD;
+    }
 
     void kill(){
-        this.alive = false;
+        this.state = State.DEAD;
     }
 
     void makeAlive(){
-        this.alive = true;
+        this.state = State.LIVE;
     }
 
     boolean isAlive(){
-        return this.alive;
+        return this.state == State.LIVE;
     }
 }
