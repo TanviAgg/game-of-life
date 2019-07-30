@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-// Represents the 2D universe of cells
+// Represents the 2D matrix of cells
 class Grid {
     private ArrayList<ArrayList<Cell>> grid;
 
