@@ -79,7 +79,7 @@ class GameOfLifeTest {
         List<Pair<Integer, Integer>> seed = new ArrayList<Pair<Integer, Integer>>();
         seed.add(new Pair<Integer, Integer>(1,1));
         seed.add(new Pair<Integer, Integer>(1,0));
-        seed.add(new Pair<Integer, Integer>(2,1));
+        seed.add(new Pair<Integer, Integer>(1,2));
 
         game.seedPopulation(seed);
         game.computeNextGeneration();
