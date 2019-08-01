@@ -34,6 +34,7 @@ class GameOfLife {
             }
         }
         this.liveCells = nextGen;
+        this.size = CoOrdinate.gridSize(getLiveCellsInCurrentState());
     }
 
     void seedPopulation(List<CoOrdinate> cells){
