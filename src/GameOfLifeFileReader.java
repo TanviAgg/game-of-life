@@ -1,4 +1,3 @@
-import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 class GameOfLifeFileReader {
-    static ArrayList<Pair<Integer, Integer>> readInputFromFile(String filename){
-        ArrayList<Pair<Integer, Integer>> cells = new ArrayList<>();
+    static ArrayList<CoOrdinate> readInputFromFile(String filename){
+        ArrayList<CoOrdinate> cells = new ArrayList<>();
         try(BufferedReader in = new BufferedReader(new FileReader(filename))) {
             String str;
             while ((str = in.readLine()) != null) {
                 String[] tokens = str.split(", ");
-                cells.add(new Pair<>(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1])));
+                cells.add(new CoOrdinate(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1])));
             }
             return cells;
         }
@@ -21,13 +20,13 @@ class GameOfLifeFileReader {
         }
     }
 
-    static boolean matchOutputWithFile(String filename, List<Pair<Integer, Integer>> cells){
-        ArrayList<Pair<Integer, Integer>> expected = readInputFromFile(filename);
+    static boolean matchOutputWithFile(String filename, List<CoOrdinate> cells){
+        ArrayList<CoOrdinate> expected = readInputFromFile(filename);
         if(expected.size() != cells.size()){
             return false;
         }
-        for(Pair<Integer, Integer> pair: expected){
-            if(!cells.contains(pair)){
+        for(CoOrdinate coOrdinate: expected){
+            if(!cells.contains(coOrdinate)){
                 return false;
             }
         }
