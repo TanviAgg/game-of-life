@@ -22,10 +22,11 @@ class CoOrdinateTest {
     }
 
     @Test
-    void shouldReturnGridSizeThree(){
+    void shouldReturnGridSize3x3(){
         List<CoOrdinate> coOrdinates = new ArrayList<>();
         coOrdinates.add(coOrdinate1_2);
         coOrdinates.add(coOrdinate2_2);
         assertEquals(3, CoOrdinate.gridSize(coOrdinates).getValue());
+        assertEquals(3, CoOrdinate.gridSize(coOrdinates).getKey());
     }
 }

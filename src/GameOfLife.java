@@ -22,8 +22,8 @@ class GameOfLife {
             }
         }
         List<CoOrdinate> currentLiveCoordinates = getLiveCellsInCurrentState();
-        for(int i = 0; i < size.getKey(); i++){
-            for(int j = 0; j < size.getValue(); j++){
+        for(int i = 0; i <= size.getKey(); i++){
+            for(int j = 0; j <= size.getValue(); j++){
                 if(!currentLiveCoordinates.contains(new CoOrdinate(i, j))){
                     Cell deadCell = new Cell(i, j, State.DEAD);
                     Cell nextState = deadCell.tick(liveCells);

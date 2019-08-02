@@ -21,8 +21,7 @@ class CoOrdinate {
             rows = max(rows, coOrdinate.x);
             columns = max(columns, coOrdinate.y);
         }
-        rows = max(rows, columns);
-        return new Pair<Integer, Integer>(rows+1, rows+1);
+        return new Pair<Integer, Integer>(rows+1, columns+1);
     }
 
     boolean isNeighbourOf(CoOrdinate that){
