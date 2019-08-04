@@ -1,4 +1,6 @@
 import javafx.util.Pair;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import static java.lang.Integer.max;
@@ -7,6 +9,7 @@ import static java.lang.Integer.max;
 class Coordinate {
     private int x;
     private int y;
+    private static List<Pair<Integer, Integer>> neighbourMatrix;
 
     Coordinate(int x, int y){
         this.x = x;
@@ -24,14 +27,15 @@ class Coordinate {
     }
 
     boolean isNeighbourOf(Coordinate that){
-        return x == that.x + 1 && y == that.y ||
-                x == that.x && y == that.y + 1 ||
-                x == that.x - 1 && y == that.y ||
-                x == that.x && y == that.y - 1 ||
-                x == that.x + 1 && y == that.y + 1 ||
-                x == that.x + 1 && y == that.y - 1 ||
-                x == that.x - 1 && y == that.y + 1 ||
-                x == that.x - 1 && y == that.y - 1;
+        if(neighbourMatrix == null){
+            setNeighbourMatrix();
+        }
+        for(Pair<Integer, Integer> neighbour: neighbourMatrix){
+            if(this.x == that.x + neighbour.getKey() && this.y == that.y + neighbour.getValue()){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -46,5 +50,17 @@ class Coordinate {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
+    }
+
+    private static void setNeighbourMatrix(){
+        neighbourMatrix = new ArrayList<Pair<Integer, Integer>>();
+        neighbourMatrix.add(new Pair<Integer, Integer>(0, 1));
+        neighbourMatrix.add(new Pair<Integer, Integer>(0, -1));
+        neighbourMatrix.add(new Pair<Integer, Integer>(1, 1));
+        neighbourMatrix.add(new Pair<Integer, Integer>(-1, 1));
+        neighbourMatrix.add(new Pair<Integer, Integer>(1, -1));
+        neighbourMatrix.add(new Pair<Integer, Integer>(1, 0));
+        neighbourMatrix.add(new Pair<Integer, Integer>(-1, 0));
+        neighbourMatrix.add(new Pair<Integer, Integer>(-1, -1));
     }
 }
