@@ -1,54 +1,59 @@
 import javafx.util.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Describes the operations on the 2D universe
 class GameOfLife {
-    private List<Cell> liveCells;
+    static final int MINIMUM_NEIGHBOUR_THRESHOLD = 2;
+    static final int MAXIMUM_NEIGHBOUR_THRESHOLD = 3;
+    static final int OPTIMAL_NEIGHBOUR_THRESHOLD = 3;
+    private LiveCells liveCells;
     private Pair<Integer, Integer> size;
 
     GameOfLife(Pair<Integer, Integer> size){
         this.size = size;
-        this.liveCells = new ArrayList<>();
+        this.liveCells = new LiveCells();
     }
 
     void computeNextGeneration(){
-        ArrayList<Cell> nextGen = new ArrayList<Cell>();
-        for(Cell cell: liveCells){
-            Cell nextStateOfCell = cell.tick(liveCells);
-            if(nextStateOfCell != null){
-                nextGen.add(nextStateOfCell);
-            }
-        }
-        List<CoOrdinate> currentLiveCoordinates = getLiveCellsInCurrentState();
+        LiveCells nextGen = new LiveCells();
+        computeNextStateOfLiveCells(nextGen);
+        computeNextStateOfDeadCells(nextGen);
+        updateGeneration(nextGen);
+    }
+
+    void seedPopulation(List<Coordinate> cells){
+        this.liveCells = new LiveCells(cells);
+    }
+
+    List<Coordinate> getLiveCellsInCurrentState(){
+        return this.liveCells.allLiveCellCoordinates();
+    }
+
+    private void computeNextStateOfLiveCells(LiveCells nextGen) {
+        this.liveCells.tick(nextGen);
+    }
+
+    private void computeNextStateOfDeadCells(LiveCells nextGen){
+        List<Coordinate> liveCoordinates = getLiveCellsInCurrentState();
         for(int i = 0; i <= size.getKey(); i++){
             for(int j = 0; j <= size.getValue(); j++){
-                if(!currentLiveCoordinates.contains(new CoOrdinate(i, j))){
-                    Cell deadCell = new Cell(i, j, State.DEAD);
-                    Cell nextState = deadCell.tick(liveCells);
-                    if(nextState != null){
-                        nextGen.add(nextState);
-                    }
+                Coordinate deadCellCoordinate = new Coordinate(i, j);
+                if(!liveCoordinates.contains(deadCellCoordinate)){
+                    tickDeadCell(deadCellCoordinate, nextGen);
                 }
             }
         }
+    }
+
+    private void tickDeadCell(Coordinate deadCellCoordinate, LiveCells nextGen) {
+        Cell deadCell = new Cell(deadCellCoordinate, State.DEAD);
+        int neighbours = this.liveCells.countLiveNeighboursOf(deadCell);
+        nextGen.addCell(deadCell.tick(neighbours));
+    }
+
+    private void updateGeneration(LiveCells nextGen) {
         this.liveCells = nextGen;
-        this.size = CoOrdinate.gridSize(getLiveCellsInCurrentState());
-    }
-
-    void seedPopulation(List<CoOrdinate> cells){
-        this.liveCells = new ArrayList<Cell>();
-        for(CoOrdinate coOrdinate : cells){
-            this.liveCells.add(new Cell(coOrdinate, State.LIVE));
-        }
-    }
-
-    List<CoOrdinate> getLiveCellsInCurrentState(){
-        ArrayList<CoOrdinate> liveCellCoordinates = new ArrayList<CoOrdinate>();
-        for(Cell cell: this.liveCells){
-            liveCellCoordinates.add(cell.coOrdinate);
-        }
-        return liveCellCoordinates;
+        this.size = Coordinate.calculateGridSize(getLiveCellsInCurrentState());
     }
 }

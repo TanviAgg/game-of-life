@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 class GameOfLifeFileReader {
-    static ArrayList<CoOrdinate> readInputFromFile(String filename){
-        ArrayList<CoOrdinate> cells = new ArrayList<>();
+    static ArrayList<Coordinate> readInputFromFile(String filename){
+        ArrayList<Coordinate> cells = new ArrayList<>();
         try(BufferedReader in = new BufferedReader(new FileReader(filename))) {
             String str;
             while ((str = in.readLine()) != null) {
                 String[] tokens = str.split(", ");
-                cells.add(new CoOrdinate(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1])));
+                cells.add(new Coordinate(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1])));
             }
             return cells;
         }
@@ -20,12 +20,12 @@ class GameOfLifeFileReader {
         }
     }
 
-    static boolean matchOutputWithFile(String filename, List<CoOrdinate> cells){
-        ArrayList<CoOrdinate> expected = readInputFromFile(filename);
+    static boolean matchOutputWithFile(String filename, List<Coordinate> cells){
+        ArrayList<Coordinate> expected = readInputFromFile(filename);
         if(expected.size() != cells.size()){
             return false;
         }
-        for(CoOrdinate coOrdinate: expected){
+        for(Coordinate coOrdinate: expected){
             if(!cells.contains(coOrdinate)){
                 return false;
             }
