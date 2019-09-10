@@ -1,31 +1,35 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CellTest {
-    @Test
-    void shouldReturnDeadForNewCellByDefault(){
-        Cell cell = new Cell();
+    private Cell liveCell1_2;
+    private Cell deadCell2_1;
 
-        assertFalse(cell.isAlive());
+    @BeforeEach
+    void initialize(){
+        liveCell1_2 = new Cell(1, 2, State.LIVE);
+        deadCell2_1 = new Cell(2, 1, State.DEAD);
     }
 
     @Test
-    void shouldReturnAliveForLiveCell(){
-        Cell cell = new Cell();
-
-        cell.makeAlive();
-
-        assertTrue(cell.isAlive());
+    void shouldReturnNullForTickForOneNeighbour(){
+        assertNull(liveCell1_2.tick(1));
     }
 
     @Test
-    void shouldReturnDeadForKilledCell(){
-        Cell cell = new Cell();
+    void shouldNotReturnNullForTickForTwoNeighbours(){
+        assertNotNull(liveCell1_2.tick(2));
+    }
 
-        cell.kill();
+    @Test
+    void shouldNotReturnNullForTickForThreeNeighbours(){
+        assertNotNull(deadCell2_1.tick(3));
+    }
 
-        assertFalse(cell.isAlive());
+    @Test
+    void shouldReturnTrueForIsNeighbour(){
+        assertTrue(deadCell2_1.isNeighbourOf(liveCell1_2));
     }
 }
